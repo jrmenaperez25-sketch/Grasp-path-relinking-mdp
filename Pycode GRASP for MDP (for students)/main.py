@@ -1,31 +1,24 @@
 from structure import instance
 from algorithms import grasp
 
-def executeInstance(instances,num_executions, output_file):
-
+def executeInstance(instances, num_executions, output_file):
     with open(output_file, "w") as file:
         for path in instances:
-            #print(f"\nProcesando instancia: {path}")
-            for i in range(1, num_executions + 1):
-                #print(f"\nEjecución {i}:")
+            # Encabezado de instancia
+            file.write("========================================================\n")
+            file.write(f"INSTANCIA: {path}\n")
+            file.write("Ejecución | Mejor solución GRASP\n")
+            file.write("--------------------------------------------------------\n")
 
-                # Iniciamos cronómetro
-                #start_time = time.time()
-
+        for i in range(1, num_executions + 1):
                 inst = instance.readInstance(path)
                 sol = grasp.execute(inst, 10, 0.75)
 
-                # Detenemos cronómetro
-                #end_time = time.time()
+                # Guardamos el valor de la función objetivo
+                file.write(f"{round(sol['of'], 2)} ")
 
-                #print("\nBEST SOLUTION:")
-                #solution.printSolution(sol)
+        file.write("\n========================================================\n\n")
 
-                # Mostramos el tiempo transcurrido
-                #elapsed = end_time - start_time
-                #print(f"\nTiempo transcurrido: {elapsed:.2f} segundos")
-
-                file.write(f"{round(sol['of'],2)} ")
 if __name__ == '__main__':
     instances = [
         "instances/MDG-a_1_100_m10.txt",
@@ -44,7 +37,7 @@ if __name__ == '__main__':
         "instances/MDG-a_19_n500_m50.txt",
         "instances/MDG-a_20_n500_m50.txt"
     ]
-    num_executions = 2
-    output_file = "resultados.txt"
-    executeInstance(instances,num_executions, output_file)
 
+    num_executions = 2
+    output_file = "resultadosGRASP.txt"
+    executeInstance(instances, num_executions, output_file)
